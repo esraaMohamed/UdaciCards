@@ -1,22 +1,42 @@
 import React from 'react'
 import {StyleSheet, TextInput, KeyboardAvoidingView} from 'react-native'
 import SubmitButton from "./SubmitButton";
-import {purple} from "../utils/color";
+import {purple} from "../utils/colors";
+import {addCardToDeck} from "../utils/decks";
 
 class AddCard extends React.Component {
     state = {
-        input: '',
+        question: '',
+        answer: '',
         showInput: false
     }
 
-    handleTextChange = (input) => {
+    static navigationOptions = ({ navigation }) => {
+        const {title} = navigation.state.params;
+        return {
+            title
+        }
+    }
+
+    handleQuestionTextChange = (input) => {
         this.setState({
-            input
+            question: input
+        })
+    }
+
+    handleAnswerTextChange = (input) => {
+        this.setState({
+            answer: input
         })
     }
 
     submit = () => {
-        console.log('submit')
+        const {title} = this.props.navigation.state.params;
+        const {question, answer} = this.state
+        const card = {question, answer}
+        addCardToDeck(title, card)
+        this.props.navigation.navigate(
+            'ViewDecks')
     }
 
     render() {
@@ -27,13 +47,13 @@ class AddCard extends React.Component {
                     placeholder='Question'
                     value={input}
                     style={styles.input}
-                    onChangeText={this.handleTextChange}
+                    onChangeText={this.handleQuestionTextChange}
                 />
                 <TextInput
                     placeholder='Answer'
                     value={input}
                     style={styles.input}
-                    onChangeText={this.handleTextChange}
+                    onChangeText={this.handleAnswerTextChange}
                 />
                 <SubmitButton onPress={this.submit} text='Submit'/>
             </KeyboardAvoidingView>

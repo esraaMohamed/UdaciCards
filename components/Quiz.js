@@ -1,12 +1,26 @@
 import React from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, StyleSheet, TouchableOpacity, ScrollView} from 'react-native'
 
-class Quiz extends React.Component{
+class Quiz extends React.Component {
+
+    static navigationOptions = ({navigation}) => {
+        const {title} = navigation.state.params;
+        return {
+            title
+        }
+    }
+
     render() {
+        const {title, noCards} = this.props.navigation.state.params
+        console.log("title ", title, "no cards? ", noCards)
         return (
-            <View style={styles.container}>
-                <Text>Quiz</Text>
-            </View>
+            <ScrollView>
+                <View style={styles.container}>
+                    <TouchableOpacity>
+                        <Text>Card</Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
         )
     }
 }
@@ -16,10 +30,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
-    },
-    img: {
-        width: 200,
-        height: 200
     }
 })
+
 export default Quiz

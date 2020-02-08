@@ -10,7 +10,9 @@ import ViewDecks from "./components/ViewDecks";
 import AddDeck from "./components/AddDeck";
 import ViewDeck from "./components/ViewDeck";
 import AddCard from "./components/AddCard";
-import {purple, white, lightPurp} from "./utils/color";
+import {purple, white, lightPurp} from "./utils/colors";
+import Quiz from "./components/Quiz";
+import Card from "./components/Card";
 
 export const UdaciStatusBar = ({backgroundColor, ...props}) => {
     return (
@@ -86,6 +88,24 @@ const MainNavigator = createStackNavigator({
                     backgroundColor: purple
                 }
             }
+        },
+        Quiz: {
+            screen: Quiz,
+            navigationOptions: {
+                headerTintColor: white,
+                headerStyle: {
+                    backgroundColor: purple
+                }
+            }
+        },
+        Card: {
+            screen: Card,
+            navigationOptions: {
+                headerTintColor: white,
+                headerStyle: {
+                    backgroundColor: purple
+                }
+            }
         }
     }
 )
@@ -93,7 +113,6 @@ const MainNavigator = createStackNavigator({
 const TabNav = createAppContainer(MainNavigator)
 
 class App extends React.Component {
-
     render() {
         return (
             <View style={{flex: 1}}>

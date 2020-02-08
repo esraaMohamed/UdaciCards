@@ -1,6 +1,6 @@
 import React from 'react'
 import {Text, TouchableOpacity, StyleSheet} from 'react-native'
-import {purple, white} from "../utils/color";
+import {purple, white} from "../utils/colors";
 
 const SubmitButton = ({onPress, text}) => {
     return (
@@ -20,18 +20,22 @@ const styles = StyleSheet.create({
         height: 45,
         marginRight: 40,
         marginLeft: 40,
-        alignSelf: 'center'
+        marginBottom: 40,
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     androidSubmitBtn: {
         backgroundColor: purple,
         padding: 10,
         paddingLeft: 30,
         paddingRight: 30,
+        marginBottom: 40,
         height: 45,
         borderRadius: 2,
         alignSelf: 'center',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'flex-end'
     },
     submitBtnText: {
         color: white,

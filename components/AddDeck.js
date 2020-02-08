@@ -1,7 +1,8 @@
 import React from 'react'
 import {Text, StyleSheet, TextInput, KeyboardAvoidingView} from 'react-native'
 import SubmitButton from "./SubmitButton";
-import {purple} from "../utils/color";
+import {purple} from "../utils/colors";
+import {saveDeckTitle} from "../utils/decks";
 
 class AddDeck extends React.Component{
     state = {
@@ -13,6 +14,12 @@ class AddDeck extends React.Component{
         this.setState({
             input
         })
+    }
+
+    submit = () => {
+        saveDeckTitle(this.state.input)
+        this.props.navigation.navigate(
+            'ViewDecks')
     }
 
     render() {
