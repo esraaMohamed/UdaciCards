@@ -54,7 +54,7 @@ class Card extends Component {
         })
     }
 
-    reset() {
+    reset = () => {
         if (this.value >= 90) {
             Animated.parallel([
                 Animated.timing(this.animatedValue, {

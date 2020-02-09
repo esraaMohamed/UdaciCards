@@ -23,7 +23,7 @@ class Quiz extends React.Component {
         clearLocalNotification().then(setLocalNotification)
     }
 
-    hasClickedCorrectBtn() {
+    hasClickedCorrectBtn = () => {
         this.setState((state) => {
             return {
                 ...state,
@@ -33,7 +33,7 @@ class Quiz extends React.Component {
         })
     }
 
-    hasClickedIncorrectBtn() {
+    hasClickedIncorrectBtn = () => {
         this.setState((state) => {
             return {
                 ...state,
@@ -43,11 +43,11 @@ class Quiz extends React.Component {
         })
     }
 
-    reset() {
+    reset = () => {
         this.setState({currentQuestionIndex: 0, correctAnswers: 0, incorrectAnswers: 0})
     }
 
-    goBackAndResetNotifications() {
+    goBackAndResetNotifications = () => {
         const { goBack } = this.props
         goBack()
         clearLocalNotification().then(setLocalNotification)
