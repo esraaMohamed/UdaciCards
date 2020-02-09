@@ -21,6 +21,13 @@ To get started right away:
 ├── assets
 │   ├── icon.png #App icon
 │   └── splash.png #Splash screen icon
+├── actions
+│   └── index.js # contains redux actions
+├── middleware
+│   ├── index.js # contains apply middleware
+│   └── logger.js # container logger middleware
+├── reducers
+│   └── index.js # contains root reducer
 └── components
 │   ├── AddCard.js # This is the add card to deck component.
 │   ├── AddDeck.js # The add deck component.
@@ -30,7 +37,7 @@ To get started right away:
 |   └── ViewDecks # this is the view decks component
 └── utils
 │   ├── colors.js # contains color values for the colors used in the app
-│   ├── decks.js # handles retrieving decks, retrieving a specific deck, adding a deck and adding cards to a deck
+│   ├── api.js # handles retrieving decks, retrieving a specific deck, adding a deck and adding cards to a deck using AsyncStorage
 │   └── helpers.js # contains helper functions
 └── App.js # This is the root component of the app.
 └── app.json # contains application configuration for builds
