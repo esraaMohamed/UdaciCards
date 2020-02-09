@@ -47,6 +47,12 @@ class Quiz extends React.Component {
         this.setState({currentQuestionIndex: 0, correctAnswers: 0, incorrectAnswers: 0})
     }
 
+    goBackAndResetNotifications() {
+        const { goBack } = this.props
+        goBack()
+        clearLocalNotification().then(setLocalNotification)
+    }
+
     render() {
         const {deck} = this.props.navigation.state.params
         const {correctAnswers, currentQuestionIndex} = this.state
@@ -62,7 +68,7 @@ class Quiz extends React.Component {
                             %</Text>
                     </View>
                     <View style={styles.btnContainer}>
-                        <TouchableOpacity style={[styles.btn, styles.goBackToDeckBtn]} onPress={() => goBack()}>
+                        <TouchableOpacity style={[styles.btn, styles.goBackToDeckBtn]} onPress={() => this.goBackAndResetNotifications()}>
                             <Text style={[styles.btnText, styles.goBackToDeckBtnText]}>Back to Deck</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.btn, styles.restartQuizBtn]} onPress={() => this.reset()}>
