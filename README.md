@@ -8,7 +8,7 @@ To get started right away:
 
 * install all project dependencies with `npm install` or `yarn install`
 * start the development server with `npm start` or `yarn start`
-
+* if problems occur with app use `npm clean` or `yarn clean` to clear cache and then run `npm install` or `yarn install` and `npm start` or `yarn start` again
 ## What You're Getting
 ```bash
 ├── README.md - This file.
