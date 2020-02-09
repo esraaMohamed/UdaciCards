@@ -2,34 +2,43 @@ import React from 'react'
 import {Text, StyleSheet, TextInput, KeyboardAvoidingView} from 'react-native'
 import SubmitButton from "./SubmitButton";
 import {purple} from "../utils/colors";
-import {saveDeckTitle} from "../utils/decks";
+import {saveDeckTitle} from "../utils/api";
+import {connect} from 'react-redux'
+import {addDeck} from "../actions";
 
 class AddDeck extends React.Component{
     state = {
-        input: '',
-        showInput: false
+        title: ''
     }
 
     handleTextChange = (input) => {
         this.setState({
-            input
+            title: input
         })
     }
 
     submit = () => {
-        saveDeckTitle(this.state.input)
+        const {title} = this.state
+        const {handleAddingDeck} = this.props
+        let deck = {}
+        deck = {
+            title: title,
+            questions: []
+        }
+        handleAddingDeck(title)
+        saveDeckTitle(deck)
         this.props.navigation.navigate(
-            'ViewDecks')
+            'ViewDeck', {deck: deck})
     }
 
     render() {
-        const {input} = this.state
+        const {title} = this.state
         return (
             <KeyboardAvoidingView behavior='padding' style={styles.container}>
                 <Text style={styles.text}>What is the title of your new deck?</Text>
                 <TextInput
                     placeholder='Deck title'
-                    value={input}
+                    value={title}
                     style={styles.input}
                     onChangeText={this.handleTextChange}
                 />
@@ -65,4 +74,17 @@ const styles = StyleSheet.create({
         marginTop: 20
     }
 })
-export default AddDeck
+
+const mapStateToProps = () => {
+    return {
+
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        handleAddingDeck : (title) => dispatch(addDeck(title))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddDeck)

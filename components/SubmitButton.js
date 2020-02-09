@@ -1,10 +1,12 @@
 import React from 'react'
-import {Text, TouchableOpacity, StyleSheet} from 'react-native'
+import {Text, TouchableOpacity, StyleSheet, Platform} from 'react-native'
 import {purple, white} from "../utils/colors";
+
 
 const SubmitButton = ({onPress, text}) => {
     return (
         <TouchableOpacity
+            accessibilityRole="button"
             style={Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.androidSubmitBtn}
             onPress={onPress}>
             <Text style={styles.submitBtnText}>{text}</Text>

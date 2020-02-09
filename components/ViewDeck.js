@@ -1,48 +1,88 @@
 import React from 'react'
-import {View, Text, StyleSheet, ScrollView} from 'react-native'
+import {View, Text, StyleSheet, ScrollView, RefreshControl} from 'react-native'
 import SubmitButton from "./SubmitButton";
-import {cardsCount} from "../utils/decks";
 import {gray, purple} from "../utils/colors";
+import {deleteDeck} from "../actions";
+import {connect} from 'react-redux'
+import {getDeck, getDecks, removeDeck} from "../utils/api";
+import {AppLoading} from "expo";
 
 class ViewDeck extends React.Component {
+    state = {
+        deck: {},
+        ready: false,
+        refreshing: false
+    }
+
+    componentDidMount() {
+        const {deck} = this.props.navigation.state.params
+        console.log("deck title ", deck.title)
+        getDeck(deck.title).then((deck) => {
+            this.setState({deck})
+        }).then(() => this.setState(() => ({ready: true})))
+    }
+
     addCard = () => {
-        const {title} = this.props.navigation.state.params
+        const {deck} = this.props.navigation.state.params
         this.props.navigation.navigate(
-            'AddCard', {title})
+            'AddCard', {deck: deck})
     }
 
     startQuiz = () => {
-        const {title} = this.props.navigation.state.params
+        const {deck} = this.props.navigation.state.params
         let args = {}
-        cardsCount(title) > 0
-            ? args = {title, noCards: false}
-            : args = {title, noCards: true}
+        deck.questions.length > 0
+            ? args = {deck, noCards: false}
+            : args = {deck, noCards: true}
         this.props.navigation.navigate(
             'Quiz', args)
     }
 
     deleteDeck = () => {
+        const {deck} = this.props.navigation.state.params
+        const {handleDeleteDeck} = this.props
+        const deckTitle = deck.title
+        handleDeleteDeck()
+        removeDeck(deckTitle)
         this.props.navigation.navigate(
             'ViewDecks')
     }
 
     static navigationOptions = ({navigation}) => {
-        const {title} = navigation.state.params;
+        const {deck} = navigation.state.params;
         return {
-            title
+            title: deck.title
         }
     }
 
+    _onRefresh = () => {
+        const {deck} = this.props.navigation.state.params
+        this.setState({refreshing: true});
+        getDeck(deck.title).then((deck) => {
+            this.setState({deck})
+        }).then(() => this.setState(() => ({ready: true, refreshing: false})))
+    }
+
     render() {
-        const {title} = this.props.navigation.state.params;
+        const {deck} = this.props.navigation.state.params;
+        if (!this.state.ready) {
+            return (<AppLoading/>)
+        }
         return (
-            <ScrollView>
+            <ScrollView refreshControl={
+                <RefreshControl
+                    refreshing={this.state.refreshing}
+                    onRefresh={this._onRefresh}
+                />
+            }>
                 <View style={styles.container}>
                     <Text style={styles.header}>
-                        {title}
+                        {deck.title}
                     </Text>
                     <Text style={styles.subHeader}>
-                        {cardsCount(title) > 1 ? `${cardsCount(title)} Cards` : `${cardsCount(title)} Card`}
+                        {deck.questions.length > 1 || deck.questions.length === 0
+                            ? `${deck.questions.length} Cards`
+                            : `${deck.questions.length} Card`}
                     </Text>
                     <SubmitButton text='Add Card' onPress={this.addCard}/>
                     <SubmitButton text='Start Quiz' onPress={this.startQuiz}/>
@@ -73,4 +113,18 @@ const styles = StyleSheet.create({
         color: gray
     }
 })
-export default ViewDeck
+
+const mapStateToProps = () => {
+    return {
+    }
+}
+const mapDispatchToProps = (dispatch, {navigation}) => {
+    const {deck} = navigation.state.params
+    const deckTitle = deck.title
+    return {
+        handleDeleteDeck: () => getDecks().then((decks) => dispatch(deleteDeck({deckTitle})))
+            .catch(error => console.log("Error deleting deck => ", error))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewDeck)

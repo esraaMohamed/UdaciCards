@@ -2,56 +2,62 @@ import React from 'react'
 import {StyleSheet, TextInput, KeyboardAvoidingView} from 'react-native'
 import SubmitButton from "./SubmitButton";
 import {purple} from "../utils/colors";
-import {addCardToDeck} from "../utils/decks";
+import {connect} from 'react-redux'
+import {addCard} from "../utils/api";
+import {addCardToDeck} from "../actions";
 
 class AddCard extends React.Component {
     state = {
         question: '',
-        answer: '',
-        showInput: false
+        answer: ''
     }
 
     static navigationOptions = ({ navigation }) => {
-        const {title} = navigation.state.params;
+        const {deck} = navigation.state.params;
         return {
-            title
+            title: deck.title
         }
     }
 
-    handleQuestionTextChange = (input) => {
+    handleQuestionTextChange = (question) => {
         this.setState({
-            question: input
+            question: question
         })
     }
 
-    handleAnswerTextChange = (input) => {
+    handleAnswerTextChange = (answer) => {
         this.setState({
-            answer: input
+            answer: answer
         })
     }
 
     submit = () => {
-        const {title} = this.props.navigation.state.params;
+        const {deck} = this.props.navigation.state.params;
         const {question, answer} = this.state
-        const card = {question, answer}
-        addCardToDeck(title, card)
+        const {handleAddCard} = this.props
+        const card = {
+            "question": question,
+            "answer": answer
+        }
+        handleAddCard(deck.title, card)
+        addCard(deck.title, card)
         this.props.navigation.navigate(
-            'ViewDecks')
+            'ViewDeck', {deck: deck})
     }
 
     render() {
-        const {input} = this.state
+        const {question, answer} = this.state
         return (
             <KeyboardAvoidingView behavior='padding' style={styles.container}>
                 <TextInput
                     placeholder='Question'
-                    value={input}
+                    value={question}
                     style={styles.input}
                     onChangeText={this.handleQuestionTextChange}
                 />
                 <TextInput
                     placeholder='Answer'
-                    value={input}
+                    value={answer}
                     style={styles.input}
                     onChangeText={this.handleAnswerTextChange}
                 />
@@ -79,4 +85,14 @@ const styles = StyleSheet.create({
     },
 })
 
-export default AddCard
+const mapStateToProps = () => {
+    return {}
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        handleAddCard: (title, card) => dispatch(addCardToDeck(title, card))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddCard)

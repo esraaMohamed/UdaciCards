@@ -13,6 +13,11 @@ import AddCard from "./components/AddCard";
 import {purple, white, lightPurp} from "./utils/colors";
 import Quiz from "./components/Quiz";
 import Card from "./components/Card";
+import {Provider} from "react-redux";
+import {createStore} from "redux";
+import reducer from './reducers'
+import middleware from './middleware'
+
 
 export const UdaciStatusBar = ({backgroundColor, ...props}) => {
     return (
@@ -115,10 +120,12 @@ const TabNav = createAppContainer(MainNavigator)
 class App extends React.Component {
     render() {
         return (
-            <View style={{flex: 1}}>
-                <UdaciStatusBar backgroundColor={purple} barStyle='light-content'/>
-                <TabNav/>
-            </View>
+            <Provider store={createStore(reducer, middleware)}>
+                <View style={{flex: 1}}>
+                    <UdaciStatusBar backgroundColor={purple} barStyle='light-content'/>
+                    <TabNav/>
+                </View>
+            </Provider>
         )
     }
 }
